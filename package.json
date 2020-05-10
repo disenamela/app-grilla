@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "matias y lalo",
+  "author": "matias & lalo",
   "license": "MIT",
   "dependencies": {
     "babel-core": "^6.26.3",
