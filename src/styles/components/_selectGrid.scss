@@ -1,0 +1,60 @@
+.SelectGrid {
+	$yPadding: .5rem;
+	margin-top: $s-3;
+	.__option {
+		background-color: $gray-800;
+		padding: $yPadding $s-3;
+		padding-top: .7rem;
+		box-sizing: border-box;
+		border-radius: $rounded;
+		box-shadow: 0 0 0 0 $gray-500 inset;
+		transition: box-shadow .14s ease-in-out, background-color .14s ease-in-out;
+		cursor: pointer;
+		&:hover {
+			box-shadow: 0 0 0 .1rem $gray-500 inset;
+		}
+		&.--selected {
+			box-shadow: 0 0 0 .1rem $blue inset;
+		}
+		&:not(:last-child) {
+			margin-bottom: $s-5;
+		}
+		.__page {
+			background-color: $gray-300;
+			padding-top: 120%;
+			border-radius: $rounded;
+			position: relative;
+			margin-bottom: $yPadding;
+			.__gridContainer {
+				position: absolute;
+				top: $s-2/1.5;
+				left: $s-2/1.5;
+				right: $s-2/1.5;
+				bottom: $s-2/1.5;
+				border: solid 1px $magenta;
+				display: flex;
+				.__gridRow {
+					flex-grow: 1;
+					width: 100%;
+					height: 100%;
+				}
+				&.--Rows {
+					flex-direction: column;
+					.__gridRow:not(:first-child) {
+						border-top: solid .1rem $magenta;
+					}
+				}
+				&.--Cols {
+					flex-direction: row;
+					.__gridRow:not(:first-child) {
+						border-left: solid .1rem $magenta;
+					}
+				}
+			}
+		}
+		p {
+			text-align: center;
+			color: $gray-400;
+		}
+	}
+}

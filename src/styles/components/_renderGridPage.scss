@@ -1,0 +1,12 @@
+.RenderGridPage {
+	height: 100%;
+	.__container {
+		padding: $s-4;
+		padding-top: 0;
+		width: 10rem;
+		height: 10rem;
+		.__page {
+			background-color: #fff;
+		}
+	}
+}

@@ -1,0 +1,70 @@
+.grillaAppContainer {
+	height: 100vh;
+	.__pageContent {
+		overflow: auto;
+	}
+}
+
+#GrillaApp {
+	overflow: auto;
+	display: flex;
+	.__options {
+		background-color: $gray-700;
+		display: flex;
+		.__pannel {
+			border-right: solid .1rem $gray-600;
+			width: 32rem;
+			padding: $s-4;
+			box-sizing: border-box;
+			height: 100%;
+			overflow-y: auto;
+			&.--s {
+				overflow-y: scroll;
+				width: 16rem;
+			}
+		}
+	}
+	.__output {
+		padding: $s-3;
+		flex-grow: 1;
+		display: flex;
+		flex-direction: column;
+		.__renderPage {
+			flex-grow: 1;
+		}
+		.__renderData {
+			height: 15rem;
+			border-top: solid .1rem $gray-600;
+		}
+	}
+	h3 {
+		color: $gray-400;
+		font-weight: 400;
+		font-size: 1.3rem;
+		text-transform: uppercase;
+		letter-spacing: .2rem;
+		padding-bottom: $s-2;
+		border-bottom: .1rem solid $gray-400;
+		&:not(:first-child) {
+			margin-top: $s-8;
+		}
+	}
+	.__halfInputs {
+		display: flex;
+		justify-content: space-between;
+		margin: $s-3 0;
+		.InputContainer:first-child {
+			margin-right: $s-4;
+		}
+		.InputContainer {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	}
+	.__posibilities {
+		&>p {
+			color: #ffff50;
+			text-align: center;
+		}
+	}
+}

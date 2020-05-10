@@ -1,0 +1,46 @@
+//colors
+$white: #FFFFFF;
+$gray-50:  #FAFAFA;
+$gray-100: #F5F5F5;
+$gray-200: #EEEEEE;
+$gray-300: #CCCCCC;
+$gray-400: #888888;//fonts
+$gray-500: #555555;
+$gray-600: #383838;//common
+$gray-700: #252526;//common
+$gray-800: #1E1E1E;//common
+$gray-900: #212121;
+$black: #000000;
+
+$yellow: #ffff50;
+$magenta: #E9507F;
+$lBlue: #9CDCF0;
+$blue: #1473E6;
+$blue-500: #3B46CC;
+
+$rounded: .6rem;
+
+
+//breakpoints
+$device-mobile: 376px;
+$device-mobileLandscape: 426px;
+$device-mobileLarge: 550px;
+$device-tablet: 769px;
+$device-tabletLandscape: 1025px;
+$device-desktop: 1200px;
+$device-desktopLarge: 1500px;
+$device-desktopWide: 1920px;
+
+// size
+$spacer: 1rem;
+$s-0: $spacer *  0;
+$s-1: $spacer *  .50;
+$s-2: $spacer *  1;
+$s-3: $spacer *  1.75;
+$s-4: $spacer *  2.50;
+$s-5: $spacer * 3;
+$s-6: $spacer * 4;
+$s-7: $spacer * 6;
+$s-8: $spacer * 10;
+$s-9: $spacer * 14;
+$s-10: $spacer * 17;
