@@ -1,4 +1,7 @@
 import React from 'react'
+import ic_width from '../../public/icons/width.svg'
+import ic_type from '../../public/icons/type.svg'
+import ic_height from '../../public/icons/height.svg'
 
 class Input extends React.Component {
 	constructor(props) {
@@ -11,27 +14,43 @@ class Input extends React.Component {
 		}
 	}
 	componentDidMount() {
-		if(this.props.postInput && typeof ResizeObserver!=='undefined') {
-			let resizeObserver = new ResizeObserver(() => { 
-				this._resizeElement() 
+		if (this.props.postInput && typeof ResizeObserver !== 'undefined') {
+			let resizeObserver = new ResizeObserver(() => {
+				this._resizeElement()
 			});
 			resizeObserver.observe(this.postInput.current)
 		}
-		this._resizeElement() 
+		this._resizeElement()
 	}
 	_resizeElement() {
-		if(this.props.postInput) {
-			const postInputWidth = ((this.postInput.current.offsetWidth + 15) / 10) +'rem';
-			this.setState(()=>({postInputWidth}))
+		if (this.props.postInput) {
+			const postInputWidth = ((this.postInput.current.offsetWidth + 15) / 10) + 'rem';
+			this.setState(() => ({ postInputWidth }))
 		}
 	}
 	componentWillUnmount() {
-		if(this.props.postInput && typeof ResizeObserver!=='undefined') {
+		if (this.props.postInput && typeof ResizeObserver !== 'undefined') {
 			resizeObserver.unobserve(this.postInput.current)
 		}
 	}
 	render() {
-		const inputType = this.props.type=='float'?'number':this.props.type
+		const inputType = this.props.type == 'float' ? 'number' : this.props.type
+		let ic = null;
+		if (this.props.icon) {
+			switch (this.props.icon) {
+				case 'width':
+					ic = ic_width;
+					break;
+
+				case 'height':
+					ic = ic_height;
+					break;
+
+				case 'type':
+					ic = ic_type;
+					break;
+			}
+		}
 		return (
 			<div className='InputContainer'>
 				<div className='__inputLabel'>
@@ -40,13 +59,17 @@ class Input extends React.Component {
 					</label>
 				</div>
 				<div className='__main'>
+					{ic &&
+						<img className="__icon" src={ic} />
+					}
 					<input
 						className='__inputMain'
 						type={inputType}
 						placeholder={this.props.placeholder}
-						step={this.props.type=='float'?'any':undefined}
+						step={this.props.type == 'float' ? 'any' : undefined}
 						style={{
-							paddingRight:this.state.postInputWidth
+							paddingRight: this.state.postInputWidth,
+							paddingLeft: ic ? 'calc(15px + 1.25rem)' : '',
 						}}
 						ref={this.inputBase}
 						onChange={this.props.onChange}
@@ -54,7 +77,7 @@ class Input extends React.Component {
 						min={0}
 						value={Number.isNaN(this.props.value) ? '' : this.props.value}
 					/>
-					{this.props.postInput&&
+					{this.props.postInput &&
 						<span
 							ref={this.postInput}
 							className='__postInput'
