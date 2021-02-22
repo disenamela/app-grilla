@@ -11,14 +11,15 @@ class GrillaApp extends React.Component {
 			pageW: 210,
 			pageH: 297,
 			lineSize: 12,
-			boxW: 19,
-			boxH: 191,
+			boxW: 41,
+			boxH: 62,
 			marginT: 20
 		}
 		this.state = {
 			...this.defaults,
 			pageProps: {
 				marginY: 0,
+				marginX: 0,
 				marginBottom: 0,
 				possibleCols: [],
 				possibleRows: [],
@@ -65,7 +66,8 @@ class GrillaApp extends React.Component {
 		const boxHeight_mm = this.state.boxH * lineHeight_mm
 		const boxWith_mm = this.state.boxW * lineHeight_mm
 		const marginBottom = this.state.pageH - this.state.marginT - boxHeight_mm
-		const marginY = (this.state.pageW - boxWith_mm) / 2
+		const marginX = (this.state.pageW - boxWith_mm) / 2
+		const marginY = (this.state.pageH - boxHeight_mm) / 2
 
 		let possibleCols = []
 		let possibleRows = []
@@ -83,6 +85,7 @@ class GrillaApp extends React.Component {
 		this.setState(()=>({
 			pageProps: {
 				marginY,
+				marginX,
 				marginBottom,
 				possibleCols,
 				possibleRows,
@@ -110,6 +113,7 @@ class GrillaApp extends React.Component {
 								<Input
 									label='Ancho'
 									type='number'
+									icon='width'
 									placeholder='0'
 									postInput='mm'
 									onChange={this.handleChange}
@@ -118,6 +122,7 @@ class GrillaApp extends React.Component {
 								/>
 								<Input
 									type='number'
+									icon='height'
 									placeholder='0'
 									postInput='mm'
 									label='Alto'
@@ -128,9 +133,10 @@ class GrillaApp extends React.Component {
 							</div>
 							<Input
 								type='number'
+								icon='type'
 								placeholder='0'
 								postInput='pt'
-								label='Línea'
+								label='Alto de Línea'
 								onChange={this.handleChange}
 								value={this.state.lineSize}
 								name='lineSize'
@@ -140,6 +146,7 @@ class GrillaApp extends React.Component {
 								<Input
 									label='Ancho'
 									type='number'
+									icon='width'
 									placeholder='0'
 									postInput='líneas'
 									onChange={this.handleChange}
@@ -149,6 +156,7 @@ class GrillaApp extends React.Component {
 								<Input
 									label='Alto'
 									type='number'
+									icon='height'
 									placeholder='0'
 									postInput='líneas'
 									onChange={this.handleChange}
@@ -167,32 +175,57 @@ class GrillaApp extends React.Component {
 								name='marginT'
 							/>
 						</div>
-						<div className='__pannel --s __posibilities'>
-							<p>Columnas</p>
-							<SelectGrid
-								type='Cols'
-								onClick={this.changeGridSelection}
-								possible={this.state.pageProps.possibleCols}
-								selected={this.state.pageProps.selectedCols}
-							/>
+						<div className='__pannel __posibilities'>
+							<p className='--with--s'>Columnas</p>
+							<div className="--s">
+								<SelectGrid
+									type='Cols'
+									onClick={this.changeGridSelection}
+									possible={this.state.pageProps.possibleCols}
+									selected={this.state.pageProps.selectedCols}
+								/>
+							</div>
 						</div>
-						<div className='__pannel --s __posibilities'>
-							<p>Filas</p>
-							<SelectGrid
-								type='Rows'
-								onClick={this.changeGridSelection}
-								possible={this.state.pageProps.possibleRows}
-								selected={this.state.pageProps.selectedRows}
-							/>
+						<div className='__pannel __posibilities'>
+							<p className='--with--s'>Filas</p>
+							<div className="--s">
+								<SelectGrid
+									type='Rows'
+									onClick={this.changeGridSelection}
+									possible={this.state.pageProps.possibleRows}
+									selected={this.state.pageProps.selectedRows}
+								/>
+							</div>
 						</div>
 					</div>
 					<div className='__output'>
 						<div className='__renderPage'>
 							<RenderGridPage
-								data={this.props.state}
+								{...this.state}
 							/>
 						</div>
-						<div className='__renderData'></div>
+						<div className='__renderData'>
+							<div className="col">
+								<div style={{flex: 2}}>
+									<h3>Márgenes</h3>
+									<div className="col">
+										<div>
+											<label>Superior <strong>{parseMargins(this.state.pageProps.marginY / 2)}</strong></label>
+											<label>Inferior <strong>{parseMargins(this.state.pageProps.marginY / 2)}</strong></label>
+										</div>
+										<div>
+											<label>Exterior <strong>{parseMargins(this.state.pageProps.marginX / 2)}</strong></label>
+											<label>Interior <strong>{parseMargins(this.state.pageProps.marginX / 2)}</strong></label>
+										</div>
+									</div>
+								</div>
+								<div>
+									<h3>Grilla</h3>
+									<label>Columnas <strong>{this.state.pageProps.selectedCols}</strong></label>
+									<label>Filas <strong>{this.state.pageProps.selectedRows}</strong></label>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</Page>
@@ -201,3 +234,7 @@ class GrillaApp extends React.Component {
 }
 
 export default GrillaApp
+
+function parseMargins(x) {
+	return x.toFixed(4) + ' mm';
+}

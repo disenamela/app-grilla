@@ -10,6 +10,7 @@
 		box-shadow: 0 0 0 0 $gray-500 inset;
 		transition: box-shadow .14s ease-in-out, background-color .14s ease-in-out;
 		cursor: pointer;
+		margin-bottom: $s-3;
 		&:hover {
 			box-shadow: 0 0 0 .1rem $gray-500 inset;
 		}
@@ -17,12 +18,11 @@
 			box-shadow: 0 0 0 .1rem $blue inset;
 		}
 		&:not(:last-child) {
-			margin-bottom: $s-5;
 		}
 		.__page {
 			background-color: $gray-200;
 			padding-top: 120%;
-			border-radius: $rounded;
+			border-radius: .4rem;
 			position: relative;
 			margin-bottom: $yPadding;
 			.__gridContainer {
