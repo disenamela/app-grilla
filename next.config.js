@@ -1,13 +1,6 @@
 module.exports = {
-	useFileSystemPublicRoutes: false,
-	webpack: (config, options) => {
-		if(options.isServer) {
-			console.log({config});
-			console.log(
-				options.webpack.ExtendedAPIPlugin
-			);
-		}
-	
-		return config
-	  },
+	pageExtensions: ['page.tsx'],
+	env: {
+		CIENCIA_ARGENTINA_HOST: process.env.CIENCIA_ARGENTINA_HOST
+	}
 }
