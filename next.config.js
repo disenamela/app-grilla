@@ -1,6 +1,7 @@
-module.exports = {
+const withSass = require('@zeit/next-sass');
+const withCSS = require('@zeit/next-css');
+
+module.exports = withCSS(withSass({
 	pageExtensions: ['page.tsx'],
-	env: {
-		CIENCIA_ARGENTINA_HOST: process.env.CIENCIA_ARGENTINA_HOST
-	}
-}
+
+}));
