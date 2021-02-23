@@ -2,6 +2,7 @@ import React from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import Head from 'next/head'
 import { theme } from '@theme'
+import '../styles/styles.globals.scss'
 
 const GlobalStyle = createGlobalStyle`
 	html {
@@ -40,6 +41,5 @@ export default function App({ Component, pageProps }: any) {
 }
 
 App.getInitialProps = async () => {
-	console.log('a');
 	return {}
 }
