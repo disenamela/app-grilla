@@ -1,7 +1,8 @@
 import React from 'react'
-import ic_width from '../../public/icons/width.svg'
-import ic_type from '../../public/icons/type.svg'
-import ic_height from '../../public/icons/height.svg'
+import Image from 'next/image'
+// import ic_width from '../../public/icons/width.svg'
+// import ic_type from '../../public/icons/type.svg'
+// import ic_height from '../../public/icons/height.svg'
 
 class Input extends React.Component {
 	constructor(props) {
@@ -15,10 +16,10 @@ class Input extends React.Component {
 	}
 	componentDidMount() {
 		if (this.props.postInput && typeof ResizeObserver !== 'undefined') {
-			let resizeObserver = new ResizeObserver(() => {
+			this.resizeObserver = new ResizeObserver(() => {
 				this._resizeElement()
 			});
-			resizeObserver.observe(this.postInput.current)
+			this.resizeObserver.observe(this.postInput.current)
 		}
 		this._resizeElement()
 	}
@@ -30,26 +31,26 @@ class Input extends React.Component {
 	}
 	componentWillUnmount() {
 		if (this.props.postInput && typeof ResizeObserver !== 'undefined') {
-			resizeObserver.unobserve(this.postInput.current)
+			this.resizeObserver.unobserve(this.postInput.current)
 		}
 	}
 	render() {
 		const inputType = this.props.type == 'float' ? 'number' : this.props.type
 		let ic = null;
 		if (this.props.icon) {
-			switch (this.props.icon) {
-				case 'width':
-					ic = ic_width;
-					break;
+			// switch (this.props.icon) {
+			// 	case 'width':
+			// 		ic = ic_width;
+			// 		break;
 
-				case 'height':
-					ic = ic_height;
-					break;
+			// 	case 'height':
+			// 		ic = ic_height;
+			// 		break;
 
-				case 'type':
-					ic = ic_type;
-					break;
-			}
+			// 	case 'type':
+			// 		ic = ic_type;
+			// 		break;
+			// }
 		}
 		return (
 			<div className='InputContainer'>
@@ -59,8 +60,8 @@ class Input extends React.Component {
 					</label>
 				</div>
 				<div className='__main'>
-					{ic &&
-						<img className="__icon" src={ic} />
+					{this.props.icon &&
+						<img className="__icon" src={`/icons/${this.props.icon}.svg`} />
 					}
 					<input
 						className='__inputMain'
