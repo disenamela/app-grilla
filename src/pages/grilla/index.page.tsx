@@ -1,8 +1,8 @@
 import Input from '@components/Input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {Posibilities, RenderGridPage} from './grilla.components'
 
-interface FormState {
+export interface FormState {
 	pageW: number
 	pageH: number
 	lineSize: number
@@ -11,14 +11,17 @@ interface FormState {
 	marginT: number
 }
 
-interface FormPageProps {
+export interface FormPageProps {
 	possibleCols: number[]
 	selectedCols: number
 	possibleRows: number[]
 	selectedRows: number
 	marginY: number
 	marginX: number
+	marginBottom: number
 }
+
+type FormStateKeys = keyof FormState
 
 function parseMargins(x:number) {
 	return x.toFixed(4) + ' mm';
@@ -26,11 +29,11 @@ function parseMargins(x:number) {
 
 const GrillaPage = () => {
 	const [formState, setFormState] = useState<FormState>({
-		pageW: 0,
-		pageH: 0,
-		lineSize: 0,
-		boxW: 0,
-		boxH: 0,
+		pageW: 210,
+		pageH: 297,
+		lineSize: 12,
+		boxW: 11,
+		boxH: 23,
 		marginT: 0,
 	})
 
@@ -41,10 +44,60 @@ const GrillaPage = () => {
 		selectedRows: 0,
 		marginY: 0,
 		marginX: 0,
+		marginBottom: 0
 	})
 
-	const handleChange = () => {
-		
+	const handleChange = (k:FormStateKeys) => (e:any) => {
+		const value = e.target.value
+		console.log(k, value);
+		const newFormState = {...formState, [k]:value}
+		setFormState(newFormState)
+	}
+	useEffect(() => {
+		calculamela()
+	}, [formState])
+	const calculamela = () => {
+		//validate values
+		if(
+			formState.pageW < 1 ||
+			formState.pageH < 1 ||
+			formState.lineSize < 1 ||
+			formState.boxW < 1 ||
+			formState.boxH < 1
+		) {
+			return;
+		}
+		const lineHeight_mm = formState.lineSize * 0.3527777778 //pt to mm
+		const boxHeight_mm = formState.boxH * lineHeight_mm		
+		const boxWith_mm = formState.boxW * lineHeight_mm
+		const marginBottom = formState.pageH - formState.marginT - boxHeight_mm
+		const marginX = (formState.pageW - boxWith_mm) / 2
+		const marginY = (formState.pageH - boxHeight_mm) / 2
+
+		let possibleCols:number[] = []
+		let possibleRows:number[] = []
+
+		for(let i=1; i<=50; i++) {
+			const calles = i-1
+			if((formState.boxW - calles) %  i == 0 && (formState.boxW - calles) > 0) {
+				possibleCols.push(i)
+			}
+			if((formState.boxH - calles) %  i == 0 && (formState.boxH - calles) > 0) {
+				possibleRows.push(i)
+			}
+		}
+
+		setPageProps({
+			possibleCols,
+			selectedCols: 1,
+			possibleRows,
+			selectedRows: 1,
+			marginY,
+			marginX,
+			marginBottom,
+		})
+
+
 	}
 	const changeGridSelection = () => {
 
@@ -68,7 +121,7 @@ const GrillaPage = () => {
 								icon='width'
 								placeholder='0'
 								postInput='mm'
-								onChange={handleChange}
+								onChange={handleChange('pageW')}
 								value={formState.pageW}
 								name='pageW'
 							/>
@@ -78,7 +131,7 @@ const GrillaPage = () => {
 								placeholder='0'
 								postInput='mm'
 								label='Alto'
-								onChange={handleChange}
+								onChange={handleChange('pageH')}
 								value={formState.pageH}
 								name='pageH'
 							/>
@@ -89,7 +142,7 @@ const GrillaPage = () => {
 							placeholder='0'
 							postInput='pt'
 							label='Alto de Línea'
-							onChange={handleChange}
+							onChange={handleChange('lineSize')}
 							value={formState.lineSize}
 							name='lineSize'
 						/>
@@ -101,7 +154,7 @@ const GrillaPage = () => {
 								icon='width'
 								placeholder='0'
 								postInput='líneas'
-								onChange={handleChange}
+								onChange={handleChange('boxW')}
 								value={formState.boxW}
 								name='boxW'
 							/>
@@ -111,7 +164,7 @@ const GrillaPage = () => {
 								icon='height'
 								placeholder='0'
 								postInput='líneas'
-								onChange={handleChange}
+								onChange={handleChange('boxH')}
 								value={formState.boxH}
 								name='boxH'
 							/>
@@ -122,7 +175,7 @@ const GrillaPage = () => {
 							type='number'
 							placeholder='0'
 							postInput='mm'
-							onChange={handleChange}
+							onChange={handleChange('marginT')}
 							value={formState.marginT}
 							name='marginT'
 						/>

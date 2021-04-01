@@ -8,6 +8,7 @@
 #GrillaApp {
 	overflow: hidden;
 	display: flex;
+	height: 100vh;
 	.__options {
 		background-color: $gray-700;
 		display: flex;

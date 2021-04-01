@@ -5,7 +5,7 @@ interface SelectGridProps {
 	type: string
 	onClick: Function
 	possible: number[]
-	selected: number
+	selected: number | null
 }
 const SelectGrid = ({
 	type,
@@ -22,7 +22,7 @@ const SelectGrid = ({
 			>
 				<div className='__page'>
 					<div className={classNames('__gridContainer', '--'+type)}>
-						{Array(o).fill(0).map((j, kCol)=>(
+						{Array(o).fill(0).map((_j, kCol)=>(
 							<div key={kCol} className='__gridRow'></div>
 						))}
 					</div>
@@ -73,68 +73,80 @@ export const Posibilities = ({
 	</>
 )
 
-interface RenderGridPageProps {
-	pageW: number
-	pageH: number
-	lineSize: number
-	boxW: number
-	boxH: number
-	marginT: number
-	possibleCols: number[]
-	selectedCols: number
-	possibleRows: number[]
-	selectedRows: number
-	marginY: number
-	marginX: number
-}
+import {FormState, FormPageProps} from './index.page'
 
+type RenderGridPageProps = FormState & FormPageProps
+
+// class RenderGridPage extends React.Component<RenderGridPageProps, RenderGridPageState> {
+// 	constructor(props:RenderGridPageProps) {
+// 		super(props)
+// 		this.state = {
+// 			pageH: 500,
+// 			maxW: 600,
+// 		}
+// 	}
+// 	componentDidMount() {
+// 		let pageHeight = document.getElementById('__page')?.clientHeight || 1080;
+// 		let contanerWidth = document.getElementById('__container')?.clientWidth || 1920;
+// 		this.setState({ pageH: pageHeight, maxW: contanerWidth });
+// 	}
+
+// 	render() {
+// 		const ratio:number = (100 / this.props.pageH) * this.props.pageW
+
+// 		let newW = (this.state.pageH / 100) * ratio;
+// 		if (newW > this.state.maxW) {
+// 			newW = this.state.maxW;
+// 		}
+
+// 		let marginX = (100 / newW) * this.props.marginX / 2;
+// 		let marginY = (100 / newW) * this.props.marginY / 2;
+// 		if(marginX < 0) { marginX = 0 }
+// 		if(marginY < 0) { marginY = 0 }
+// 		const newP = marginY.toFixed(2) + '% ' + marginX.toFixed(2) + '%';
+
+// 		const rows = this.props.selectedRows;
+// 		const cols = this.props.selectedCols;
+
+// 		return (
+// 			<div className='RenderGridPage'>
+// 				<div className='__container' id='__container'>
+// 					<div className='__page' id='__page' style={{ width: newW||100, padding: newP }}>
+// 						<div
+// 							className='__box'
+// 							style={{ gridTemplateColumns: 'repeat(' + cols + ', 1fr)' }}
+// 						>
+// 							{[...Array(rows*cols)].map((j,i)=><div key={i} className="__module"></div>)}
+// 						</div>
+// 					</div>
+// 				</div>
+// 			</div>
+// 		)
+// 	}
+// }
 interface RenderGridPageState {
 	pageH: number
 	maxW: number
 }
 class RenderGridPage extends React.Component<RenderGridPageProps, RenderGridPageState> {
+	containerRef:React.RefObject<HTMLDivElement>
 	constructor(props:RenderGridPageProps) {
 		super(props)
-		this.state = {
-			pageH: 500,
-			maxW: 600,
-		}
+		this.containerRef = React.createRef<HTMLDivElement>()
+		// this.state = {
+
+		// }
 	}
 	componentDidMount() {
-		let pageHeight = document.getElementById('__page')?.clientHeight || 1080;
-		let contanerWidth = document.getElementById('__container')?.clientWidth || 1920;
-		this.setState({ pageH: pageHeight, maxW: contanerWidth });
+		// let pageHeight = document.getElementById('__page')?.clientHeight || 1080;
+		// let contanerWidth = document.getElementById('__container')?.clientWidth || 1920;
+		// this.setState({ pageH: pageHeight, maxW: contanerWidth });
 	}
 
 	render() {
-		const ratio:number = (100 / this.props.pageH) * this.props.pageW
-
-		let newW = (this.state.pageH / 100) * ratio;
-		if (newW > this.state.maxW) {
-			newW = this.state.maxW;
-		}
-
-		let marginX = (100 / newW) * this.props.marginX / 2;
-		let marginY = (100 / newW) * this.props.marginY / 2;
-		if(marginX < 0) { marginX = 0 }
-		if(marginY < 0) { marginY = 0 }
-		const newP = marginY.toFixed(2) + '% ' + marginX.toFixed(2) + '%';
-
-		const rows = this.props.selectedRows;
-		const cols = this.props.selectedCols;
-
 		return (
-			<div className='RenderGridPage'>
-				<div className='__container' id='__container'>
-					<div className='__page' id='__page' style={{ width: newW||100, padding: newP }}>
-						<div
-							className='__box'
-							style={{ gridTemplateColumns: 'repeat(' + cols + ', 1fr)' }}
-						>
-							{[...Array(rows*cols)].map(()=><div className="__module"></div>)}
-						</div>
-					</div>
-				</div>
+			<div ref={this.containerRef}>
+				WIP
 			</div>
 		)
 	}
