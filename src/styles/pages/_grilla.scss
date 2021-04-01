@@ -44,12 +44,16 @@
 		.__renderData {
 			//height: 15rem;
 			border-top: solid .1rem $gray-600;
+			padding-top: 2rem;
 			.col {
 				display: flex;
 				grid-gap: $s-7;
 				& > * {
 					flex: 1;
 				}
+			}
+			h3 {
+				margin-bottom: 1rem;
 			}
 			label {
 				color: $gray-300;
