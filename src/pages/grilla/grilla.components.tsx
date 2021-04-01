@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 interface SelectGridProps {
@@ -82,6 +82,7 @@ const DisplayContainer = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-grow: 1;
 `
 interface DisplayPageProps {
 	w: number
@@ -110,7 +111,7 @@ const DisplayBox = styled.div<DisplayBoxProps>`
 		width: ${w}px;
 		height: ${h}px;
 		margin-top: ${mt}px;
-		${show&&`border: solid 1px red;`}
+		${show&&`border: solid 1px #E9507F;`}
 	`}
 `
 interface SectorProps {
@@ -120,7 +121,7 @@ interface SectorProps {
 const Sector = styled.div<SectorProps>`
 	height: 100%;
 	width: 100%;
-	border: solid 1px cyan;
+	border: solid 1px #9CDCF0;
 	box-sizing: border-box;
 	${({direction,rowH}) => `
 		${direction==='row' ? `margin-bottom: ${rowH}px;` : `margin-right: ${rowH}px;`}
@@ -180,8 +181,10 @@ const RenderGridPage:FunctionComponent<RenderGridPageProps> = ({
 	selectedRows,
 	lineHeight_mm
 }) => {
-	let containerFrameW = 500
-	let containerFrameH = 600
+	const containerRef = useRef<HTMLDivElement>(null)
+	const containerPadding = 100
+	let containerFrameW = 500 - containerPadding
+	let containerFrameH = 600 - containerPadding
 	const calcContainerState = ():PageState => {
 		const containerRatio = containerFrameH / containerFrameW
 		const pageRatio = pageH / pageW
@@ -198,8 +201,21 @@ const RenderGridPage:FunctionComponent<RenderGridPageProps> = ({
 	const [containerState, setContainerState] = useState<PageState>(calcContainerState())
 	const updateState = () => setContainerState(calcContainerState())
 	useEffect(() => {
+		if(containerRef.current) {
+			console.log(containerRef.current);
+			
+			containerFrameW = containerRef.current?.clientWidth - containerPadding
+			containerFrameH = containerRef.current?.clientHeight - containerPadding
+			
+		} else {
+			console.log('noRef');
+			
+		}
+	}, [])
+	useEffect(() => {
+		console.log(containerFrameW, containerFrameH);
 		updateState()
-	}, [pageW, pageH])
+	}, [pageW, pageH, containerFrameW, containerFrameH])
 	
 	// sizes in px
 	const realBoxH = boxHeight_mm * containerState.scale
@@ -213,16 +229,14 @@ const RenderGridPage:FunctionComponent<RenderGridPageProps> = ({
 	const disaplayRows = true
 
 	return (
-		<>
-			<DisplayContainer>
-				<DisplayPage w={containerState.pageWidth} h={containerState.pageHeight}>
-					<DisplayBox show={displayBox} h={realBoxH} w={realBoxW} mt={realMarginT} >
-						<DisplaySectors show={disaplayColumns} n={selectedCols} direction='column' rowH={realRowH} />
-						<DisplaySectors show={disaplayRows} n={selectedRows} direction='row' rowH={realRowH} />
-					</DisplayBox>
-				</DisplayPage>
-			</DisplayContainer>
-		</>
+		<DisplayContainer ref={containerRef}>
+			<DisplayPage w={containerState.pageWidth} h={containerState.pageHeight}>
+				<DisplayBox show={displayBox} h={realBoxH} w={realBoxW} mt={realMarginT} >
+					<DisplaySectors show={disaplayColumns} n={selectedCols} direction='column' rowH={realRowH} />
+					<DisplaySectors show={disaplayRows} n={selectedRows} direction='row' rowH={realRowH} />
+				</DisplayBox>
+			</DisplayPage>
+		</DisplayContainer>
 	)
 }
 

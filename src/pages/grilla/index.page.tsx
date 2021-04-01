@@ -198,12 +198,10 @@ const GrillaPage = () => {
 					/>
 				</div>
 				<div className='__output'>
-					<div className='__renderPage'>
-						<RenderGridPage
-							{...formState}
-							{...pageProps}
-						/>
-					</div>
+					<RenderGridPage
+						{...formState}
+						{...pageProps}
+					/>
 					<div className='__renderData'>
 						<div className="col">
 							<div style={{flex: 2}}>
