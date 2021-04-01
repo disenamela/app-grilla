@@ -16,9 +16,11 @@ export interface FormPageProps {
 	selectedCols: number
 	possibleRows: number[]
 	selectedRows: number
-	marginY: number
 	marginX: number
-	marginBottom: number
+	marginBottom_mm: number
+	lineHeight_mm: number
+	boxHeight_mm: number
+	boxWith_mm: number
 }
 
 type FormStateKeys = keyof FormState
@@ -32,9 +34,9 @@ const GrillaPage = () => {
 		pageW: 210,
 		pageH: 297,
 		lineSize: 12,
-		boxW: 11,
-		boxH: 23,
-		marginT: 0,
+		boxW: 35,
+		boxH: 55,
+		marginT: 28
 	})
 
 	const [pageProps, setPageProps] = useState<FormPageProps>({
@@ -42,15 +44,17 @@ const GrillaPage = () => {
 		selectedCols: 0,
 		possibleRows: [],
 		selectedRows: 0,
-		marginY: 0,
 		marginX: 0,
-		marginBottom: 0
+		marginBottom_mm: 0,
+		lineHeight_mm: 0,
+		boxHeight_mm: 0,
+		boxWith_mm: 0,
 	})
 
 	const handleChange = (k:FormStateKeys) => (e:any) => {
 		const value = e.target.value
 		console.log(k, value);
-		const newFormState = {...formState, [k]:value}
+		const newFormState = {...formState, [k]:parseInt(value)}
 		setFormState(newFormState)
 	}
 	useEffect(() => {
@@ -70,9 +74,8 @@ const GrillaPage = () => {
 		const lineHeight_mm = formState.lineSize * 0.3527777778 //pt to mm
 		const boxHeight_mm = formState.boxH * lineHeight_mm		
 		const boxWith_mm = formState.boxW * lineHeight_mm
-		const marginBottom = formState.pageH - formState.marginT - boxHeight_mm
+		const marginBottom_mm = formState.pageH - formState.marginT - boxHeight_mm
 		const marginX = (formState.pageW - boxWith_mm) / 2
-		const marginY = (formState.pageH - boxHeight_mm) / 2
 
 		let possibleCols:number[] = []
 		let possibleRows:number[] = []
@@ -92,15 +95,21 @@ const GrillaPage = () => {
 			selectedCols: 1,
 			possibleRows,
 			selectedRows: 1,
-			marginY,
 			marginX,
-			marginBottom,
+			marginBottom_mm,
+			lineHeight_mm,
+			boxHeight_mm,
+			boxWith_mm,
 		})
 
 
 	}
-	const changeGridSelection = () => {
-
+	const changeGridSelection = (o:number, type:string) => {
+		if(type==='Rows') {
+			setPageProps( prev => ({...prev, selectedRows:o}) )
+		} else {
+			setPageProps( prev => ({...prev, selectedCols:o}) )
+		}
 	}
 	return(
 		<div
@@ -201,8 +210,8 @@ const GrillaPage = () => {
 								<h3>Márgenes</h3>
 								<div className="col">
 									<div>
-										<label>Superior <strong>{parseMargins(pageProps.marginY / 2)}</strong></label>
-										<label>Inferior <strong>{parseMargins(pageProps.marginY / 2)}</strong></label>
+										<label>Superior <strong>{parseMargins(formState.marginT)}</strong></label>
+										<label>Inferior <strong>{parseMargins(pageProps.marginBottom_mm)}</strong></label>
 									</div>
 									<div>
 										<label>Exterior <strong>{parseMargins(pageProps.marginX / 2)}</strong></label>

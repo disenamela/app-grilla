@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 interface SelectGridProps {
@@ -73,83 +73,186 @@ export const Posibilities = ({
 	</>
 )
 
+// DISPLAY PORT
 import {FormState, FormPageProps} from './index.page'
+import styled from 'styled-components'
+
+const DisplayContainer = styled.div`
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`
+interface DisplayPageProps {
+	w: number
+	h: number
+}
+const DisplayPage = styled.div<DisplayPageProps>`
+	display: flex;
+	justify-content: center;
+	background-color: white;
+	border-radius: 2rem;
+	${({w,h}) => `
+		width: ${w}px;
+		height: ${h}px;
+	`}
+`
+
+interface DisplayBoxProps {
+	w: number
+	h: number
+	mt: number
+	show: boolean
+}
+const DisplayBox = styled.div<DisplayBoxProps>`
+	position: relative;
+	${({w,h,mt,show}) => `
+		width: ${w}px;
+		height: ${h}px;
+		margin-top: ${mt}px;
+		${show&&`border: solid 1px red;`}
+	`}
+`
+interface SectorProps {
+	direction: 'row' | 'column'
+	rowH: number
+}
+const Sector = styled.div<SectorProps>`
+	height: 100%;
+	width: 100%;
+	border: solid 1px cyan;
+	box-sizing: border-box;
+	${({direction,rowH}) => `
+		${direction==='row' ? `margin-bottom: ${rowH}px;` : `margin-right: ${rowH}px;`}
+	`}
+	&:last-of-type {
+		margin: 0;
+	}
+`
+interface SectorsContainerProps {
+	direction: 'row' | 'column'
+}
+const SectorsContainer = styled.div<SectorsContainerProps>`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	${({direction}) => `
+		flex-direction: ${direction==='row' ? 'column' : 'row'};
+	`}
+`
+interface DisplaySectorProps {
+	show: boolean
+	n: number
+	direction: 'row' | 'column'
+	rowH: number
+}
+const DisplaySectors:FunctionComponent<DisplaySectorProps> = ({show,n,direction,rowH}) => {
+	if (!show) {return(<></>)}
+	const sectors = Array.from(Array(n).keys())
+	return (
+		<SectorsContainer direction={direction}>
+			{sectors.map( i => <Sector key={i} direction={direction} rowH={rowH} /> )}
+		</SectorsContainer>
+	)
+}
+
 
 type RenderGridPageProps = FormState & FormPageProps
 
-// class RenderGridPage extends React.Component<RenderGridPageProps, RenderGridPageState> {
-// 	constructor(props:RenderGridPageProps) {
-// 		super(props)
-// 		this.state = {
-// 			pageH: 500,
-// 			maxW: 600,
-// 		}
-// 	}
-// 	componentDidMount() {
-// 		let pageHeight = document.getElementById('__page')?.clientHeight || 1080;
-// 		let contanerWidth = document.getElementById('__container')?.clientWidth || 1920;
-// 		this.setState({ pageH: pageHeight, maxW: contanerWidth });
-// 	}
-
-// 	render() {
-// 		const ratio:number = (100 / this.props.pageH) * this.props.pageW
-
-// 		let newW = (this.state.pageH / 100) * ratio;
-// 		if (newW > this.state.maxW) {
-// 			newW = this.state.maxW;
-// 		}
-
-// 		let marginX = (100 / newW) * this.props.marginX / 2;
-// 		let marginY = (100 / newW) * this.props.marginY / 2;
-// 		if(marginX < 0) { marginX = 0 }
-// 		if(marginY < 0) { marginY = 0 }
-// 		const newP = marginY.toFixed(2) + '% ' + marginX.toFixed(2) + '%';
-
-// 		const rows = this.props.selectedRows;
-// 		const cols = this.props.selectedCols;
-
-// 		return (
-// 			<div className='RenderGridPage'>
-// 				<div className='__container' id='__container'>
-// 					<div className='__page' id='__page' style={{ width: newW||100, padding: newP }}>
-// 						<div
-// 							className='__box'
-// 							style={{ gridTemplateColumns: 'repeat(' + cols + ', 1fr)' }}
-// 						>
-// 							{[...Array(rows*cols)].map((j,i)=><div key={i} className="__module"></div>)}
-// 						</div>
-// 					</div>
-// 				</div>
-// 			</div>
-// 		)
-// 	}
-// }
-interface RenderGridPageState {
-	pageH: number
-	maxW: number
+interface PageState {
+	scale: number
+	pageHeight: number
+	pageWidth: number
 }
-class RenderGridPage extends React.Component<RenderGridPageProps, RenderGridPageState> {
-	containerRef:React.RefObject<HTMLDivElement>
-	constructor(props:RenderGridPageProps) {
-		super(props)
-		this.containerRef = React.createRef<HTMLDivElement>()
-		// this.state = {
 
-		// }
+const RenderGridPage:FunctionComponent<RenderGridPageProps> = ({
+	pageW,
+	pageH,
+	marginT,
+	boxHeight_mm,
+	boxWith_mm,
+	selectedCols,
+	selectedRows,
+	lineHeight_mm
+}) => {
+	let containerFrameW = 500
+	let containerFrameH = 600
+	const calcContainerState = ():PageState => {
+		const containerRatio = containerFrameH / containerFrameW
+		const pageRatio = pageH / pageW
+		const larger = containerRatio > pageRatio ? 'w' : 'h' //que costado de la pagina toca el container
+		const pageWidth = larger=='w' ? containerFrameW : containerFrameH / pageRatio
+		const pageHeight = larger=='h' ? containerFrameH : containerFrameW * pageRatio
+		const scale = larger==='h' ? (containerFrameH / pageH) : (containerFrameW / pageW)
+		return {
+			scale,
+			pageHeight,
+			pageWidth,
+		}
 	}
-	componentDidMount() {
-		// let pageHeight = document.getElementById('__page')?.clientHeight || 1080;
-		// let contanerWidth = document.getElementById('__container')?.clientWidth || 1920;
-		// this.setState({ pageH: pageHeight, maxW: contanerWidth });
-	}
+	const [containerState, setContainerState] = useState<PageState>(calcContainerState())
+	const updateState = () => setContainerState(calcContainerState())
+	useEffect(() => {
+		updateState()
+	}, [pageW, pageH])
+	
+	// sizes in px
+	const realBoxH = boxHeight_mm * containerState.scale
+	const realBoxW = boxWith_mm * containerState.scale
+	const realMarginT = marginT * containerState.scale
+	const realRowH = lineHeight_mm * containerState.scale
 
-	render() {
-		return (
-			<div ref={this.containerRef}>
-				WIP
-			</div>
-		)
-	}
+	//optional features
+	const displayBox = true
+	const disaplayColumns = true
+	const disaplayRows = true
+
+	return (
+		<>
+			<DisplayContainer>
+				<DisplayPage w={containerState.pageWidth} h={containerState.pageHeight}>
+					<DisplayBox show={displayBox} h={realBoxH} w={realBoxW} mt={realMarginT} >
+						<DisplaySectors show={disaplayColumns} n={selectedCols} direction='column' rowH={realRowH} />
+						<DisplaySectors show={disaplayRows} n={selectedRows} direction='row' rowH={realRowH} />
+					</DisplayBox>
+				</DisplayPage>
+			</DisplayContainer>
+		</>
+	)
 }
 
 export {RenderGridPage}
+
+
+/***************************** WIP PATTERN */
+
+interface MyProps {
+	myPropVar: string
+}
+interface MyState {
+	myStateVar: string
+}
+
+export const MyComponent:FunctionComponent<MyProps> = ({ myPropVar }) => {
+	const getTheState = ():MyState => {
+		return {
+			myStateVar: myPropVar
+		}
+	}
+	const [myState, setMyState] = useState<MyState>( getTheState() )
+	const updateTheState = () => setMyState(getTheState())
+	if('something happens') {
+		updateTheState()
+	}
+	useEffect(() => {
+		updateTheState()
+	}, [myPropVar])
+	return(
+		<div>{myState.myStateVar}</div>
+	)
+}
