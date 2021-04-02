@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef, useState, useLayoutEffect } from 'react'
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 interface SelectGridProps {
@@ -99,68 +99,68 @@ const DisplayPage = styled.div<DisplayPageProps>`
 	`}
 `
 
-interface DisplayBoxProps {
-	w: number
-	h: number
-	mt: number
-	show: boolean
-}
-const DisplayBox = styled.div<DisplayBoxProps>`
-	position: relative;
-	${({w,h,mt,show}) => `
-		width: ${w}px;
-		height: ${h}px;
-		margin-top: ${mt}px;
-		${show&&`border: solid 1px #E9507F;`}
-	`}
-`
-interface SectorProps {
-	direction: 'row' | 'column'
-	rowH: number
-}
-const Sector = styled.div<SectorProps>`
-	height: 100%;
-	width: 100%;
-	border: solid 1px #9CDCF0;
-	box-sizing: border-box;
-	${({direction,rowH}) => `
-		${direction==='row' ? `margin-bottom: ${rowH}px;` : `margin-right: ${rowH}px;`}
-	`}
-	&:last-of-type {
-		margin: 0;
-	}
-`
-interface SectorsContainerProps {
-	direction: 'row' | 'column'
-}
-const SectorsContainer = styled.div<SectorsContainerProps>`
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	${({direction}) => `
-		flex-direction: ${direction==='row' ? 'column' : 'row'};
-	`}
-`
-interface DisplaySectorProps {
-	show: boolean
-	n: number
-	direction: 'row' | 'column'
-	rowH: number
-}
-const DisplaySectors:FunctionComponent<DisplaySectorProps> = ({show,n,direction,rowH}) => {
-	if (!show) {return(<></>)}
-	const sectors = Array.from(Array(n).keys())
-	return (
-		<SectorsContainer direction={direction}>
-			{sectors.map( i => <Sector key={i} direction={direction} rowH={rowH} /> )}
-		</SectorsContainer>
-	)
-}
+// interface DisplayBoxProps {
+// 	w: number
+// 	h: number
+// 	mt: number
+// 	show: boolean
+// }
+// const DisplayBox = styled.div<DisplayBoxProps>`
+// 	position: relative;
+// 	${({w,h,mt,show}) => `
+// 		width: ${w}px;
+// 		height: ${h}px;
+// 		margin-top: ${mt}px;
+// 		${show&&`border: solid 1px #E9507F;`}
+// 	`}
+// `
+// interface SectorProps {
+// 	direction: 'row' | 'column'
+// 	rowH: number
+// }
+// const Sector = styled.div<SectorProps>`
+// 	height: 100%;
+// 	width: 100%;
+// 	border: solid 1px #9CDCF0;
+// 	box-sizing: border-box;
+// 	${({direction,rowH}) => `
+// 		${direction==='row' ? `margin-bottom: ${rowH}px;` : `margin-right: ${rowH}px;`}
+// 	`}
+// 	&:last-of-type {
+// 		margin: 0;
+// 	}
+// `
+// interface SectorsContainerProps {
+// 	direction: 'row' | 'column'
+// }
+// const SectorsContainer = styled.div<SectorsContainerProps>`
+// 	position: absolute;
+// 	top: 0;
+// 	left: 0;
+// 	width: 100%;
+// 	height: 100%;
+// 	display: flex;
+// 	justify-content: space-between;
+// 	align-items: center;
+// 	${({direction}) => `
+// 		flex-direction: ${direction==='row' ? 'column' : 'row'};
+// 	`}
+// `
+// interface DisplaySectorProps {
+// 	show: boolean
+// 	n: number
+// 	direction: 'row' | 'column'
+// 	rowH: number
+// }
+// const DisplaySectors:FunctionComponent<DisplaySectorProps> = ({show,n,direction,rowH}) => {
+// 	if (!show) {return(<></>)}
+// 	const sectors = Array.from(Array(n).keys())
+// 	return (
+// 		<SectorsContainer direction={direction}>
+// 			{sectors.map( i => <Sector key={i} direction={direction} rowH={rowH} /> )}
+// 		</SectorsContainer>
+// 	)
+// }
 
 const Cell = styled.div`
 	border: solid 1px #e95ab9;
