@@ -31,6 +31,17 @@
 				padding: 0 1rem 0 0;
 				position: relative;
 			}
+			header {
+				width: 100%;
+				border-bottom: solid .1rem $gray-600;
+				padding-bottom: $s-4;
+				.logo {
+					display: inline-block;
+					img {
+						width: min(100%, 200px);
+					}
+				}
+			}
 		}
 	}
 	.__output {
@@ -92,8 +103,10 @@
 	}
 	.__posibilities {
 		&>p {
-			color: #ffff50;
+			color: #ffec3d;
+			font-weight: bold;
 			text-align: center;
+			font-size: 1.3rem;
 		}
 		.--with--s {
 			position: relative;

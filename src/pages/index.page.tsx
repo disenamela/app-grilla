@@ -121,6 +121,11 @@ const GrillaPage = () => {
 			<div id='GrillaApp'>
 				<div className='__options'>
 					<div className='__pannel'>
+						<header>
+							<a href="https://diseñamela.com" target="_blank" className="logo">
+								<img src="/logo-disenamela.png" alt="diseñamela"/>
+							</a>
+						</header>
 						<h3>Página</h3>
 						<div className='__halfInputs'>
 							<Input

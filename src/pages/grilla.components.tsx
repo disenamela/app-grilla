@@ -92,7 +92,7 @@ const DisplayPage = styled.div<DisplayPageProps>`
 	display: flex;
 	justify-content: center;
 	background-color: white;
-	border-radius: 2rem;
+	border-radius: 1rem;
 	${({w,h}) => `
 		width: ${w}px;
 		height: ${h}px;
