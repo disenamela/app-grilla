@@ -5,12 +5,8 @@ import { theme } from '@theme'
 import '../styles/styles.globals.scss'
 
 const GlobalStyle = createGlobalStyle`
-	html {
-		font-size: 62.5%;
-		height: 100%;
-	}
 	body {
-		font-family: 'Montserrat', sans-serif;
+		font-family: 'Inconsolata', sans-serif;
 		min-height: 100%;
 		font-size: 1.4rem;
 	}
@@ -29,7 +25,7 @@ export default function App({ Component, pageProps }: any) {
 			<ThemeProvider theme={theme}>
 				<GlobalStyle />
 				<Head>
-					<link href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"></link>
+					<link href="https://fonts.googleapis.com/css?family=Inconslata:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"></link>
 					<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
 				</Head>
 				<Layout {...LayoutProps}>

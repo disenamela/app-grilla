@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
+import React, { FunctionComponent, useEffect, useRef, useState, useLayoutEffect } from 'react'
 import classNames from 'classnames'
 
 interface SelectGridProps {
@@ -75,7 +75,7 @@ export const Posibilities = ({
 
 // DISPLAY PORT
 import {FormState, FormPageProps} from './index.page'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 const DisplayContainer = styled.div`
 	position: relative;
@@ -162,6 +162,35 @@ const DisplaySectors:FunctionComponent<DisplaySectorProps> = ({show,n,direction,
 	)
 }
 
+const Cell = styled.div`
+	border: solid 1px #e95ab9;
+	border-radius: 2px;
+`
+
+interface MainLaloBoxProps {
+	h: number
+	w: number
+	cols: number
+	rows: number
+	gap: number
+	mt: number
+}
+const MainLaloBox = styled.div<MainLaloBoxProps>`
+
+	${ ({h, w, cols, rows, gap, mt}) => css`
+		width: ${w}px;
+		height: ${h}px;
+		margin-top: ${mt}px;
+		display: grid;
+		gap: ${gap}px;
+		grid-template-rows: repeat(${rows},auto);
+		grid-template-columns: repeat(${cols}, auto);
+		
+
+	` }
+`
+
+
 
 type RenderGridPageProps = FormState & FormPageProps
 
@@ -183,9 +212,13 @@ const RenderGridPage:FunctionComponent<RenderGridPageProps> = ({
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const containerPadding = 100
-	let containerFrameW = 500 - containerPadding
-	let containerFrameH = 600 - containerPadding
-	const calcContainerState = ():PageState => {
+	// const [containerSize, setContainerSize] = useState<ContainerSizeState>({
+	// 	containerFrameW: 500,
+	// 	containerFrameH: 600
+	// })
+	const calcContainerState = (containerFrameW:number, containerFrameH:number):PageState => {
+		console.log({containerFrameW});
+		
 		const containerRatio = containerFrameH / containerFrameW
 		const pageRatio = pageH / pageW
 		const larger = containerRatio > pageRatio ? 'w' : 'h' //que costado de la pagina toca el container
@@ -198,25 +231,33 @@ const RenderGridPage:FunctionComponent<RenderGridPageProps> = ({
 			pageWidth,
 		}
 	}
-	const [containerState, setContainerState] = useState<PageState>(calcContainerState())
-	const updateState = () => setContainerState(calcContainerState())
+	const [containerState, setContainerState] = useState<PageState>(calcContainerState(500, 600))
+	// const updateState = () => setContainerState(calcContainerState())
+	// useLayoutEffect(() => {
+	// 	console.log('CALCULADA PAGINA');
+		
+	// 	if(containerRef.current) {
+	// 		setContainerSize({
+	// 			containerFrameW: containerRef.current?.clientWidth - containerPadding,
+	// 			containerFrameH: containerRef.current?.clientHeight - containerPadding
+
+	// 		})
+	// 	} else {
+	// 		console.log('noRef');
+	// 	}
+	// }, [])
 	useEffect(() => {
+		console.log('CANNNNGE');
+		let containerFrameW = 500
+		let containerFrameH = 500
 		if(containerRef.current) {
-			console.log(containerRef.current);
-			
 			containerFrameW = containerRef.current?.clientWidth - containerPadding
 			containerFrameH = containerRef.current?.clientHeight - containerPadding
-			
 		} else {
 			console.log('noRef');
-			
 		}
-	}, [])
-	useEffect(() => {
-		console.log(containerFrameW, containerFrameH);
-		updateState()
-	}, [pageW, pageH, containerFrameW, containerFrameH])
-	
+		setContainerState(calcContainerState(containerFrameW, containerFrameH))
+	}, [pageW, pageH])
 	// sizes in px
 	const realBoxH = boxHeight_mm * containerState.scale
 	const realBoxW = boxWith_mm * containerState.scale
@@ -224,17 +265,25 @@ const RenderGridPage:FunctionComponent<RenderGridPageProps> = ({
 	const realRowH = lineHeight_mm * containerState.scale
 
 	//optional features
-	const displayBox = true
-	const disaplayColumns = true
-	const disaplayRows = true
+	// const displayBox = false
+	// const disaplayColumns = true
+	// const disaplayRows = true
 
 	return (
 		<DisplayContainer ref={containerRef}>
 			<DisplayPage w={containerState.pageWidth} h={containerState.pageHeight}>
-				<DisplayBox show={displayBox} h={realBoxH} w={realBoxW} mt={realMarginT} >
+				<MainLaloBox h={realBoxH} w={realBoxW} cols={selectedCols} rows={selectedRows} gap={realRowH} mt={realMarginT}>
+					{Array.from(Array(selectedRows * selectedCols)).map( (_i, j) => (
+						<>
+								<Cell key={`${j}`} />
+						</>
+					))}
+				</MainLaloBox>
+				{/* <DisplayBox show={displayBox} h={realBoxH} w={realBoxW} mt={realMarginT} >
 					<DisplaySectors show={disaplayColumns} n={selectedCols} direction='column' rowH={realRowH} />
 					<DisplaySectors show={disaplayRows} n={selectedRows} direction='row' rowH={realRowH} />
-				</DisplayBox>
+					
+				</DisplayBox> */}
 			</DisplayPage>
 		</DisplayContainer>
 	)

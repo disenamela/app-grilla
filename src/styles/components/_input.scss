@@ -6,6 +6,7 @@
 		margin-bottom: $s-2;
 		label {
 			color: $gray-300;
+			font-weight: bold;
 		}
 	}
 	.__main {
@@ -21,7 +22,7 @@
 			width: 100%;
 			position: relative;
 			box-sizing: border-box;
-			padding: 1rem;
+			padding: 1.7rem;
 			height: 3rem;
 			border-radius: $rounded;
 			color: $white;
@@ -36,7 +37,7 @@
 			}
 			&:hover {
 				//main hover
-				box-shadow:  0 0 0 .1rem $gray-300 inset;
+				box-shadow:  0 0 0 .1rem $gray-400 inset;
 			}
 			&:focus {
 				box-shadow:  0 0 0 .1rem $blue inset;

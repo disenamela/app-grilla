@@ -31,7 +31,7 @@
 				left: $s-2/1.5;
 				right: $s-2/1.5;
 				bottom: $s-2/1.5;
-				border: solid 1px $magenta;
+				border: solid 1px #bbb;
 				display: flex;
 				.__gridRow {
 					flex-grow: 1;
@@ -41,13 +41,13 @@
 				&.--Rows {
 					flex-direction: column;
 					.__gridRow:not(:first-child) {
-						border-top: solid .1rem $magenta;
+						border-top: solid .1rem #bbb;
 					}
 				}
 				&.--Cols {
 					flex-direction: row;
 					.__gridRow:not(:first-child) {
-						border-left: solid .1rem $magenta;
+						border-left: solid .1rem #bbb;
 					}
 				}
 			}
