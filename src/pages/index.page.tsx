@@ -56,9 +56,11 @@ const GrillaPage = () => {
 		const newFormState = {...formState, [k]:parseInt(value)}
 		setFormState(newFormState)
 	}
+	
 	useEffect(() => {
 		calculamela()
-	}, [formState])
+	}, [formState]);
+
 	const calculamela = () => {
 		//validate values
 		if(
@@ -182,6 +184,7 @@ const GrillaPage = () => {
 								name='boxH'
 							/>
 						</div>
+
 						<h3>Márgenes</h3>
 						<Input
 							label='Superior'
@@ -192,6 +195,40 @@ const GrillaPage = () => {
 							value={formState.marginT}
 							name='marginT'
 						/>
+
+						{/* <div className='__halfInputs'>
+							<Input
+								label='Inferior'
+								type='number'
+								placeholder='0'
+								postInput='mm'
+								onChange={handleChange('marginT')}
+								value={formState.marginT}
+								name='marginB'
+							/>
+						</div>
+
+						<div className='__halfInputs'>
+							<Input
+								label='Izquierdo'
+								type='number'
+								placeholder='0'
+								postInput='mm'
+								onChange={handleChange('marginT')}
+								value={formState.marginT}
+								name='marginL'
+							/>
+							<Input
+								label='Derecho'
+								type='number'
+								placeholder='0'
+								postInput='mm'
+								onChange={handleChange('marginT')}
+								value={formState.marginT}
+								name='marginR'
+							/>
+						</div> */}
+
 					</div>
 					<Posibilities
 						changeGridSelection={changeGridSelection}

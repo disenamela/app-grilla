@@ -13,7 +13,7 @@
 		background-color: $gray-700;
 		display: flex;
 		.__pannel {
-			border-right: solid .1rem $gray-600;
+			border-right: solid 0.1rem $gray-600;
 			width: 32rem;
 			padding: $s-4;
 			box-sizing: border-box;
@@ -33,7 +33,7 @@
 			}
 			header {
 				width: 100%;
-				border-bottom: solid .1rem $gray-600;
+				border-bottom: solid 0.1rem $gray-600;
 				padding-bottom: $s-4;
 				.logo {
 					display: inline-block;
@@ -54,11 +54,15 @@
 		}
 		.__renderData {
 			//height: 15rem;
-			border-top: solid .1rem $gray-600;
-			padding-top: 2rem;
+			background: #252526;
+			border: solid 0.1rem $gray-600;
+			border: .1rem solid $gray-500;
+			padding: 1.5rem 1.5rem 0;
+			border-radius: 1rem;
+			margin-bottom: $s-3;
 			.col {
 				display: flex;
-				grid-gap: $s-7;
+				grid-gap: $s-6;
 				& > * {
 					flex: 1;
 				}
@@ -72,7 +76,7 @@
 				margin-bottom: $s-3;
 				strong {
 					float: right;
-					color: $gray-500;
+					color: $gray-300;
 				}
 			}
 		}
@@ -82,11 +86,11 @@
 		font-weight: 400;
 		font-size: 1.3rem;
 		text-transform: uppercase;
-		letter-spacing: .2rem;
-		padding-bottom: $s-2;
-		border-bottom: .1rem solid $gray-400;
+		letter-spacing: 0.2rem;
+		padding-bottom: $s-1;
+		border-bottom: 0.1rem solid $gray-400;
 		&:not(:first-child) {
-			margin-top: $s-6;
+			margin-top: $s-4;
 		}
 	}
 	.__halfInputs {
@@ -102,7 +106,7 @@
 		}
 	}
 	.__posibilities {
-		&>p {
+		& > p {
 			color: #ffec3d;
 			font-weight: bold;
 			text-align: center;
@@ -113,7 +117,7 @@
 			padding-bottom: $s-1;
 		}
 		.--with--s:after {
-			content: '';
+			content: "";
 			display: block;
 			position: absolute;
 			top: 100%;
